@@ -60,8 +60,33 @@ def test_load_xml(filename):
     outer_file = file(filename, 'w')
     writer = codecs.lookup('utf-8')[3](outer_file)
     doc.writexml(writer, encoding='utf-8')
+    outer_file.close()
     #print doc.toxml('UTF-8')
+
+def convertGBK2UTF8(filename):
+    fp = open(filename, "r")
+    dataString = fp.read()
+    fp.close()
+    unicodeString = unicode(dataString, 'gbk')
+    utf8String = unicodeString.encode('utf-8')
+    outer_file = file(filename, 'w')
+    outer_file.write(utf8String)
+    outer_file.close()
+
+def convertUTF82GBK(filename):
+    fp = open(filename, "r")
+    dataString = fp.read()
+    fp.close()
+    unicodeString = unicode(dataString, 'utf-8')
+    gbkString = unicodeString.encode('gbk')
+    
+    outer_file = file(filename, 'w')
+    outer_file.write(gbkString)
+    outer_file.close()
 
 if __name__ == "__main__":
     ori_filename = sys.argv[1]
+    convertGBK2UTF8(ori_filename)
     test_load_xml(ori_filename)
+    convertUTF82GBK(ori_filename)
+
